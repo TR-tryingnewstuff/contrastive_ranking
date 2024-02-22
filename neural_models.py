@@ -7,6 +7,24 @@ import numpy as np
 import keras
 import keras.losses
 
+def   similarity(u, v, temperature):
+    return tf.tensordot(u, v, axes=1)
+    
+
+
+def contrastive_loss_reg(u, N, temperature):
+
+    loss = 0
+    for i inrange(1, 2*N + 1):
+        numerator = tf.exp(sim(u[i-1], u [i], temperature)
+        denominator = tf.reduce_sum([tf.exp(sim[i-1],u[k-1], tau)) for k in range(1, 2*N+1) if k != i], axis=0)
+
+    loss += -tf.math.log(numerator / denominator)
+
+    return loss / (2 * N)
+    
+
+
 def mqe_pow(pow=4.):
     def mqe(y_true, y_pred):
     
